@@ -1,0 +1,8 @@
+{
+  "name": "blog",
+  "private": "true",
+  "author": "chikuwa111",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
