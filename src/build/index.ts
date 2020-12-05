@@ -33,7 +33,7 @@ function syncDeletedFiles(
   );
 }
 
-/** fileData 内の [[wikilink]] を [wikilink](wikilink) に置き換える */
+/** fileData 内の [[wikilink]] を [wikilink](wikilink "wikilink") に置き換える */
 function updateWikilinks(fileData: string): string {
   return fileData.replace(/\[\[(.+)\]\]/g, '[$1]($1 "$1")');
 }
