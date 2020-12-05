@@ -72,6 +72,7 @@ export async function build() {
         if (distFileNames.includes(fileName)) {
           return fs.rm(distPath);
         }
+        return;
       }
 
       const updatedData = updateWikilinks(data);
