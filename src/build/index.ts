@@ -16,19 +16,19 @@ function filterMarkdown(fileName: string): boolean {
 }
 
 /** DIST_PATH にあって CONTENT_PATH からなくなっているファイルがあったら DIST_PATH からも削除する */
-async function syncDeletedFiles(
+function syncDeletedFiles(
   distFileNames: string[],
   contentFileNames: string[],
   distPath: string
-): Promise<void> {
+): Promise<void[]> {
   const deletedFiles = distFileNames.filter(
     (fileName) => !contentFileNames.includes(fileName)
   );
 
-  await Promise.all(
-    deletedFiles.map(async (fileName) => {
+  return Promise.all(
+    deletedFiles.map((fileName) => {
       const filePath = path.resolve(distPath, fileName);
-      await fs.rm(filePath);
+      return fs.rm(filePath);
     })
   );
 }
@@ -70,13 +70,12 @@ export async function build() {
       if (!published) {
         // unpublished になったファイルは DIST_PATH から削除する
         if (distFileNames.includes(fileName)) {
-          await fs.rm(distPath);
+          return fs.rm(distPath);
         }
-        return;
       }
 
       const updatedData = updateWikilinks(data);
-      await fs.writeFile(distPath, updatedData, "utf-8");
+      return fs.writeFile(distPath, updatedData, "utf-8");
     })
   );
 
