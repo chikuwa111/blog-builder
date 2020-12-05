@@ -79,5 +79,5 @@ export async function build() {
     })
   );
 
-  await Promise.all([syncDeletedFilesPromise, updateFilesPromise]);
+  return Promise.all([syncDeletedFilesPromise, updateFilesPromise]);
 }
