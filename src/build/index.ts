@@ -33,6 +33,11 @@ async function syncDeletedFiles(
   );
 }
 
+/** fileData 内の [[wikilink]] を [wikilink](wikilink) に置き換える */
+function updateWikilinks(fileData: string): string {
+  return fileData.replace(/\[\[(.+)\]\]/g, '[$1]($1 "$1")');
+}
+
 export async function build() {
   const { CONTENT_PATH, DIST_PATH } = process.env;
   if (!CONTENT_PATH) {
@@ -47,9 +52,13 @@ export async function build() {
     filterMarkdown
   );
 
-  await syncDeletedFiles(distFileNames, contentFileNames, DIST_PATH);
+  const syncDeletedFilesPromise = syncDeletedFiles(
+    distFileNames,
+    contentFileNames,
+    DIST_PATH
+  );
 
-  await Promise.all(
+  const updateFilesPromise = Promise.all(
     contentFileNames.map(async (fileName) => {
       const contentPath = path.resolve(CONTENT_PATH, fileName);
       const distPath = path.resolve(DIST_PATH, fileName);
@@ -66,7 +75,10 @@ export async function build() {
         return;
       }
 
-      await fs.copyFile(contentPath, distPath);
+      const updatedData = updateWikilinks(data);
+      await fs.writeFile(distPath, updatedData, "utf-8");
     })
   );
+
+  await Promise.all([syncDeletedFilesPromise, updateFilesPromise]);
 }
