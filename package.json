@@ -4,6 +4,7 @@
   "author": "chikuwa111",
   "scripts": {
     "build": "ts-node -T -r dotenv/config scripts/build.ts",
+    "get-dest-path": "ts-node -T -r dotenv/config scripts/getDestPath",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

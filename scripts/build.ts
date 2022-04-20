@@ -1,4 +1,5 @@
-import { build } from "../src/build";
+import { copyPublishedFiles } from "../src/copyPublishedFiles";
+import { removeAll } from "../src/removeAll";
 
 async function run() {
   try {
@@ -10,7 +11,8 @@ async function run() {
       throw new Error("process.env.DEST_PATH is not specified.");
     }
 
-    await build(SRC_PATH, DEST_PATH);
+    await removeAll(DEST_PATH);
+    await copyPublishedFiles(SRC_PATH, DEST_PATH);
   } catch (err) {
     console.error(err);
     process.exit(1);
