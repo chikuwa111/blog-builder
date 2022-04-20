@@ -38,45 +38,37 @@ function updateWikilinks(fileData: string): string {
   return fileData.replace(/\[\[(.+)\]\]/g, '[$1]($1 "$1")');
 }
 
-export async function build() {
-  const { CONTENT_PATH, DIST_PATH } = process.env;
-  if (!CONTENT_PATH) {
-    throw new Error("process.env.CONTENT_PATH is not specified.");
-  }
-  if (!DIST_PATH) {
-    throw new Error("process.env.DIST_PATH is not specified.");
-  }
-
-  const distFileNames = (await fs.readdir(DIST_PATH)).filter(filterMarkdown);
-  const contentFileNames = (await fs.readdir(CONTENT_PATH)).filter(
+export async function build(contentPath: string, distPath: string) {
+  const distFileNames = (await fs.readdir(distPath)).filter(filterMarkdown);
+  const contentFileNames = (await fs.readdir(contentPath)).filter(
     filterMarkdown
   );
 
   const syncDeletedFilesPromise = syncDeletedFiles(
     distFileNames,
     contentFileNames,
-    DIST_PATH
+    distPath
   );
 
   const updateFilesPromise = Promise.all(
     contentFileNames.map(async (fileName) => {
-      const contentPath = path.resolve(CONTENT_PATH, fileName);
-      const distPath = path.resolve(DIST_PATH, fileName);
+      const contentFilePath = path.resolve(contentPath, fileName);
+      const distFilePath = path.resolve(distPath, fileName);
 
-      const data = await fs.readFile(contentPath, "utf-8");
+      const data = await fs.readFile(contentFilePath, "utf-8");
       const { attributes } = fm<MyFrontMatterAttributes>(data);
 
       const published = isPublished(attributes);
       if (!published) {
         // unpublished になったファイルは DIST_PATH から削除する
         if (distFileNames.includes(fileName)) {
-          return fs.rm(distPath);
+          return fs.rm(distFilePath);
         }
         return;
       }
 
       const updatedData = updateWikilinks(data);
-      return fs.writeFile(distPath, updatedData, "utf-8");
+      return fs.writeFile(distFilePath, updatedData, "utf-8");
     })
   );
 
