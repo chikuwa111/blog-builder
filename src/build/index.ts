@@ -15,7 +15,7 @@ function filterMarkdown(fileName: string): boolean {
   return path.extname(fileName) === ".md";
 }
 
-/** DIST_PATH にあって CONTENT_PATH からなくなっているファイルがあったら DIST_PATH からも削除する */
+/** DEST_PATH にあって SRC_PATH からなくなっているファイルがあったら DEST_PATH からも削除する */
 function syncDeletedFiles(
   distFileNames: string[],
   contentFileNames: string[],
@@ -60,7 +60,7 @@ export async function build(contentPath: string, distPath: string) {
 
       const published = isPublished(attributes);
       if (!published) {
-        // unpublished になったファイルは DIST_PATH から削除する
+        // unpublished になったファイルは DEST_PATH から削除する
         if (distFileNames.includes(fileName)) {
           return fs.rm(distFilePath);
         }
