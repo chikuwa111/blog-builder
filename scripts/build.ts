@@ -1,3 +1,4 @@
+import { addDateToFrontMatter } from "../src/addDateToFrontMatter";
 import { copyPublishedFiles } from "../src/copyPublishedFiles";
 import { removeAll } from "../src/removeAll";
 import { updateWikilink } from "../src/updateWikilink";
@@ -15,6 +16,7 @@ async function run() {
     await removeAll(DEST_PATH);
     await copyPublishedFiles(SRC_PATH, DEST_PATH);
     await updateWikilink(DEST_PATH);
+    await addDateToFrontMatter(SRC_PATH, DEST_PATH);
   } catch (err) {
     console.error(err);
     process.exit(1);
