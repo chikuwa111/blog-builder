@@ -6,7 +6,7 @@ import util from "util";
 
 const execPromise = util.promisify(exec);
 
-export async function addDateToFrontMatter(srcPath: string, destPath: string) {
+export async function addLastModifiedDateToFrontMatter(srcPath: string, destPath: string) {
   const destFileNames = await fs.readdir(destPath);
   const promises = destFileNames.map(async (fileName) => {
     const { stdout } = await execPromise(
@@ -18,7 +18,10 @@ export async function addDateToFrontMatter(srcPath: string, destPath: string) {
 
     const filePath = path.resolve(destPath, fileName);
     const content = await fs.readFile(filePath, "utf-8");
-    const contentWithDate = content.replace("---", `---\ndate: ${date}`);
+    const contentWithDate = content.replace(
+      "---",
+      `---\nlast_modified_date: ${date}`
+    );
     await fs.writeFile(filePath, contentWithDate);
   });
 
