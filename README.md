@@ -1,6 +1,6 @@
 # blog-builder
 
-https://github.com/chikuwa111/blog にコンテンツをあげるためのプロジェクト
+https://github.com/chikuwa111/note にコンテンツをあげるためのプロジェクト
 
 ## モチベーション
 
@@ -10,14 +10,23 @@ https://github.com/chikuwa111/blog にコンテンツをあげるためのプロ
 
 ## 内容
 
-- 今は frontmatter で`published: true`がついている markdown を指定された場所にコピペするだけ
+src以下のプログラムを組み合わせてやりたいことを実現
+
+- removeAll
+  - フォルダの中身を空にする
+- copyPublishedFiles
+  - Front Matterで`published: true`がついているmarkdownファイルをコピペする
+- updateWikilink
+  - [foam-cli](https://github.com/foambubble/foam-cli)でWikilinkをMarkdownで有効なリンクに変換する
+- addLastModifiedDateToFrontMatter
+  - Front Matterに最終コミット日時を追加する
 
 ## 使い方
 
 - `$ npm i`
-- `env.sample`を参考に`.env`を作成
+- `.env.sample`を参考に`.env`を作成
 - `$ ./build.sh`
 
 ## 展望
 
-- Gatsby や Next.js を使ってもっとカスタマイズしたい
+- backlinkを生成した
