@@ -20,7 +20,7 @@ export async function addLastModifiedDateToFrontMatter(srcPath: string, destPath
     const content = await fs.readFile(filePath, "utf-8");
     const contentWithDate = content.replace(
       "---",
-      `---\nlast_modified_date: ${date}`
+      `---\ndate: ${date}`
     );
     await fs.writeFile(filePath, contentWithDate);
   });
