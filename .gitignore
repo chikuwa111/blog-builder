@@ -1,3 +1,6 @@
+# test target data
+test/*/data/target
+
 # Logs
 logs
 *.log
