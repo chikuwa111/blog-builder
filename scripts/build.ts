@@ -1,3 +1,4 @@
+import { addBacklinksToFrontMatter } from "../src/addBacklinksToFrontMatter";
 import { addLastModifiedDateToFrontMatter } from "../src/addLastModifiedDateToFrontMatter";
 import { copyPublishedFiles } from "../src/copyPublishedFiles";
 import { removeAll } from "../src/removeAll";
@@ -17,6 +18,7 @@ async function run() {
     await copyPublishedFiles(SRC_PATH, DEST_PATH);
     await updateWikilink(DEST_PATH);
     await addLastModifiedDateToFrontMatter(SRC_PATH, DEST_PATH);
+    await addBacklinksToFrontMatter(DEST_PATH);
   } catch (err) {
     console.error(err);
     process.exit(1);

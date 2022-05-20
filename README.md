@@ -20,13 +20,11 @@ src以下のプログラムを組み合わせてやりたいことを実現
   - [foam-cli](https://github.com/foambubble/foam-cli)でWikilinkをMarkdownで有効なリンクに変換する
 - addLastModifiedDateToFrontMatter
   - Front Matterに最終コミット日時を追加する
+- addBacklinksToFrontMatter
+  - Front Matterにバックリンクのリストを追加する
 
 ## 使い方
 
 - `$ npm i`
 - `.env.sample`を参考に`.env`を作成
 - `$ ./build.sh`
-
-## 展望
-
-- backlinkを生成したい
