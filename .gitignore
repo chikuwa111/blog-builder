@@ -1,5 +1,5 @@
 # test target data
-test/*/data/target
+test/**/target
 
 # Logs
 logs

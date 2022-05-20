@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 import { addBacklinksToFrontMatter } from "../../src/addBacklinksToFrontMatter";
 
 async function copyDir(from: string, to: string) {
@@ -49,18 +49,25 @@ async function assertEqualDirContents(
   await Promise.all(promises);
 }
 
-test("addBacklinksToFrontMatter", async () => {
-  const beforePath = path.resolve(__dirname, "data", "before");
-  const targetPath = path.resolve(__dirname, "data", "target");
-  const afterPath = path.resolve(__dirname, "data", "after");
+describe("addBacklinksToFrontMatter", async () => {
+  const testcasesPath = path.resolve(__dirname, "testcases");
+  const testcases = await fs.readdir(testcasesPath);
 
-  // setup
-  await removeAll(targetPath);
-  await copyDir(beforePath, targetPath);
+  testcases.forEach((testcase) => {
+    test(testcase, async () => {
+      const beforePath = path.resolve(testcasesPath, testcase, "before");
+      const targetPath = path.resolve(testcasesPath, testcase, "target");
+      const afterPath = path.resolve(testcasesPath, testcase, "after");
 
-  // test
-  await addBacklinksToFrontMatter(targetPath);
+      // setup
+      await removeAll(targetPath);
+      await copyDir(beforePath, targetPath);
 
-  // assert
-  await assertEqualDirContents(targetPath, afterPath);
+      // test
+      await addBacklinksToFrontMatter(targetPath);
+
+      // assert
+      await assertEqualDirContents(targetPath, afterPath);
+    });
+  });
 });
