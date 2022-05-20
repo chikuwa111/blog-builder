@@ -4,7 +4,7 @@
   "author": "chikuwa111",
   "scripts": {
     "build": "ts-node -T -r dotenv/config scripts/build.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "dependencies": {
     "date-fns": "^2.28.0",
@@ -16,6 +16,7 @@
     "dotenv": "^16.0.0",
     "prettier": "^2.6.2",
     "ts-node": "^10.7.0",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "vitest": "^0.12.6"
   }
 }
