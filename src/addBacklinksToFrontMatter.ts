@@ -19,23 +19,29 @@ export async function addBacklinksToFrontMatter(dirPath: string) {
     backlinks: [],
   }));
 
-  await Promise.all(backlinkMapList.map(
-    async ({ filePath, fileNameWithoutExt }) => {
+  await Promise.all(
+    backlinkMapList.map(async ({ filePath, fileNameWithoutExt }) => {
       const content = await fs.readFile(filePath, "utf-8");
       backlinkMapList.forEach((it) => {
         if (content.includes(`[[${it.fileNameWithoutExt}]]`)) {
           it.backlinks.push(fileNameWithoutExt);
         }
       });
-    }
-  ));
+    })
+  );
 
   await Promise.all(
     backlinkMapList.map(async ({ filePath, backlinks }) => {
       const content = await fs.readFile(filePath, "utf-8");
+      const backlinksString =
+        backlinks.length === 0
+          ? "backlinks: []"
+          : `backlinks:${backlinks
+              .map((backlink) => `\n  - ${backlink}`)
+              .join("")}`;
       const contentWithBacklinks = content.replace(
         "---",
-        `---\nbacklinks: [${backlinks.join(", ")}]`
+        `---\n${backlinksString}`
       );
       await fs.writeFile(filePath, contentWithBacklinks);
     })

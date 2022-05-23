@@ -1,5 +1,7 @@
 ---
-backlinks: [b, c]
+backlinks:
+  - b
+  - c
 published: true
 ---
 
